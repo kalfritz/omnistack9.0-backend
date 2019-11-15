@@ -3,9 +3,18 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 
+const socketio = require('scoket.io');
+const http = require('http');
+
 const routes = require('./routes');
 
 const app = express();
+const server = http.Server(app);
+const io = socketio(server);
+
+io.on('connection', socket => {
+  console.log('usuário conectado', socket.id);
+});
 
 mongoose.connect('mongodb://localhost:27017/aircnc', {
   useNewUrlParser: true,
@@ -19,4 +28,4 @@ app.use(routes);
 
 const port = 3333;
 
-app.listen(port);
+server.listen(port);
