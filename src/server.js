@@ -12,14 +12,24 @@ const app = express();
 const server = http.Server(app);
 const io = socketio(server);
 
-io.on('connection', socket => {
-  console.log('usuário conectado', socket.id);
-  console.log(socket.handshake.query);
-});
-
 mongoose.connect('mongodb://localhost:27017/aircnc', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+});
+
+const connectedUsers = {};
+
+io.on('connection', socket => {
+  const { user_id } = socket.handshake.query;
+
+  connectedUsers[user_id] = socket.id;
+});
+
+app.use((req, res, next) => {
+  req.io = io;
+  req.connectedUsers = connectedUsers;
+
+  return next();
 });
 
 app.use(cors());
