@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 
-const socketio = require('scoket.io');
+const socketio = require('socket.io');
 const http = require('http');
 
 const routes = require('./routes');
@@ -14,6 +14,7 @@ const io = socketio(server);
 
 io.on('connection', socket => {
   console.log('usuário conectado', socket.id);
+  console.log(socket.handshake.query);
 });
 
 mongoose.connect('mongodb://localhost:27017/aircnc', {
