@@ -14,6 +14,7 @@ const app = express();
 const server = http.Server(app);
 const io = socketio(server);
 
+console.log(process.env.DB_CONNECTION);
 mongoose.connect(process.env.DB_CONNECTION, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
